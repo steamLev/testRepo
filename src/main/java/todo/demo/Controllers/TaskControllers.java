@@ -9,12 +9,13 @@ import todo.demo.Services.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 @Slf4j
 @RestController
 public class TaskControllers {
 
-
+ExecutorService service=   Executors.newFixedThreadPool(3);
 
     @Autowired
     PostAction postAction;
@@ -31,7 +32,7 @@ public class TaskControllers {
 @PostMapping(value = "/create/{desc}")
 public void createTask(@PathVariable("desc") String desc){
      Task task=new Task();
-
+//создаем задание
     try{
         task.setStatus(false);
         task.setDesc(desc);
@@ -44,8 +45,10 @@ public void createTask(@PathVariable("desc") String desc){
 @GetMapping(value = "/get/all")
 public List<Task> getTask(){
     List<Task> list=new ArrayList<>();
+    //выгружаем все  задания в многопоточном режиме
     try{
-        list=   taskService.getTask( new Task());
+        Callable<List<Task>> callableTask = () -> {return taskService.getTask( new Task());};
+           list=service.submit(callableTask).get(3000, TimeUnit.SECONDS);
     }
     catch (Exception e){log.info("getTask error");
          e.printStackTrace();}
@@ -57,6 +60,7 @@ public List<Task> getTask(){
     public List<Task> getTaskId(@PathVariable("id") Long id){
         Task task=new Task();
         List<Task> taskList=new ArrayList<>();
+        //выгружаем    задание по id
         try{
             task.setId(id);
              taskList=   taskService.getTask(task);
@@ -68,6 +72,7 @@ public List<Task> getTask(){
 @DeleteMapping(value = "/delete/{id}")
 public void deleteTask(@PathVariable("id") Long id){
     Task task=new Task();
+    //удаляем    задание по id
     try{
         task.setId(id);
         taskService.todoAction( deleteAction,task);
@@ -79,6 +84,7 @@ public void deleteTask(@PathVariable("id") Long id){
 public void putTask(@PathVariable("id") Long id,
         @PathVariable("desc") String desc,
                     @PathVariable("status") Boolean status){
+    //вносим изменения в     задание по id
     try{
         Task task=new Task(id,desc,status);
         taskService.todoAction( putAction,task);
