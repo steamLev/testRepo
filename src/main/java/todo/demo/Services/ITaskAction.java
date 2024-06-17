@@ -5,8 +5,8 @@ import todo.demo.Models.Task;
 import java.util.List;
 
 public interface ITaskAction {
-    public void action( Task task);
+      void action( Task task);
 
 
-    public List<Task> get(Task task);
+      List<Task> get(Task task);
 }

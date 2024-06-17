@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import todo.demo.Models.Task;
 import todo.demo.Repositories.TaskRepository;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
