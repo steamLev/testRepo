@@ -10,6 +10,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import todo.demo.Models.Task;
 import todo.demo.Repositories.TaskRepository;
 import todo.demo.Services.PostAction;
+import todo.demo.Services.PutAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ public class PostActionTest {
 
     @InjectMocks
     private PostAction postAction;
+
+    @InjectMocks
+    private PutAction putAction;
 
     @BeforeEach
     public void setUp() {
@@ -56,6 +60,16 @@ public class PostActionTest {
         Task task = new Task( );
         
         assertNull( postAction.get(task));
+    }
+
+    @Test
+    public void testPut() {
+        Task task = new Task( );
+        putAction.action(task);
+        verify(taskRepository, times(1)).save(task);
+
+        // Пример использования assert для проверки успешного выполнения
+        assertDoesNotThrow(() -> putAction.action(task));
     }
 }
 
