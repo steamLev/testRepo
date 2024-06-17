@@ -68,7 +68,6 @@ public List<Task> getTask(){
 @DeleteMapping(value = "/delete/{id}")
 public void deleteTask(@PathVariable("id") Long id){
     Task task=new Task();
-
     try{
         task.setId(id);
         taskService.todoAction( deleteAction,task);
