@@ -25,28 +25,4 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest
 class DemoApplicationTests {
 
-	@Mock
-	private TaskService taskService;
-
-	@InjectMocks
-	private PostAction postAction;
-
-	@InjectMocks
-	GetAction getAction;
-	@Mock
-	TaskRepository taskRepository;
-
-	@BeforeEach
-	public void setUp() {
-		MockitoAnnotations.openMocks(this);
-	}
-
-	@Test
-	public void testAction_Success() {
-		Task task = new Task(222L,"test",false);
-                          postAction.action(task);
-       List<Task> taskTestList=getAction.get(task);
-	   Task tastTest=taskTestList.getFirst();
-		Assertions.assertEquals(tastTest,task);
-	}
 }

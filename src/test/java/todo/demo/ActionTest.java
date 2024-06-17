@@ -9,22 +9,23 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import todo.demo.Models.Task;
 import todo.demo.Repositories.TaskRepository;
+import todo.demo.Services.DeleteAction;
 import todo.demo.Services.PostAction;
 import todo.demo.Services.PutAction;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-public class PostActionTest {
+public class ActionTest {
     @Mock
     private TaskRepository taskRepository;
 
     @InjectMocks
     private PostAction postAction;
+
+    @InjectMocks
+    private DeleteAction deleteAction;
 
     @InjectMocks
     private PutAction putAction;
@@ -64,12 +65,19 @@ public class PostActionTest {
 
     @Test
     public void testPut() {
-        Task task = new Task( );
+        Task task = new Task();
         putAction.action(task);
         verify(taskRepository, times(1)).save(task);
-
-        // Пример использования assert для проверки успешного выполнения
         assertDoesNotThrow(() -> putAction.action(task));
+    }
+
+    @Test
+    public void testDelete() {
+        Task task = new Task( );
+        postAction.action(task);
+        deleteAction.action(task);
+        verify(taskRepository, times(1)).save(task);
+        assertDoesNotThrow(() -> deleteAction.action(task));
     }
 }
 
